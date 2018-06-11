@@ -56,6 +56,13 @@ class CPU {
         switch (op) {
             case 'MUL':
                 // !!! IMPLEMENT ME
+                return this.reg[regA] * this.reg[regB]
+            case 'ADD':
+            return this.reg[regA] + this.reg[regB]
+            case'SUB':
+            return this.reg[regA] - this.reg[regB]
+            case'DIV':
+            return this.reg[regA] / this.reg[regB]
                 break;
         }
     }

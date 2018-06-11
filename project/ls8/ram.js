@@ -6,7 +6,6 @@ class RAM {
         this.mem = new Array(size);
         this.mem.fill(0);
     }
-
     /**
      * Write (store) MDR value at address MAR
      */
@@ -15,7 +14,6 @@ class RAM {
         // write the value in the MDR to the address MAR
         this.mem[MAR]=MDR;
     }
-
     /**
      * Read (load) MDR value from address MAR
      * 
@@ -27,5 +25,4 @@ class RAM {
         return this.mem[MAR]
     }
 }
-
 module.exports = RAM;
