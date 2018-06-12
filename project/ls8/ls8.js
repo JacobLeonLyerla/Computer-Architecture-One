@@ -1,29 +1,27 @@
 const RAM = require("./ram");
 const CPU = require("./cpu");
+const fs = require("fs");
+
+const argv2 = process.argv[2];
 
 /**
  * Load an LS8 program into memory
  *
  * TODO: load this from a file on disk instead of having it hardcoded
  */
+
+
+const grabNumbers = /[0-1]{8}/g
+const programFile = fs.readFileSync(argv2, "utf-8").match(grabNumbers)
+
+
 function loadMemory() {
   // Hardcoded program to print the number 8 on the console
+const program = []
 
-  const program = [
-    // print8.ls8
-    '10011001', // LDI R0,8
-    '00000000',
-    '00001000',
-    '10011001', // LDI R1,9
-    '00000001',
-    '00001001',
-    '10101010', // MUL R0,R1 <---
-    '00000000',
-    '00000001',
-    '01000011', // PRN R0
-    '00000000',
-    '00000001', // HLT // HLT       Halt and quit
-  ];
+programFile.forEach(data =>program.push(data))
+
+
 
   // Load the program into the CPU's memory a byte at a time
   for (let i = 0; i < program.length; i++) {
