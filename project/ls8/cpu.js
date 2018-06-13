@@ -1,14 +1,12 @@
-
 /**
  * LS-8 v2.0 emulator skeleton code
  */
 const LDI = 0b10011001;
 const PRN = 0b01000011;
-const HLT =0b00000001;
+const HLT = 0b00000001;
 const MUL = 0b10101010;
 const PUSH = 0b01001101;
 const POP = 0b01001100;
-
 
 let SP = 0x07;
 // let IS = 0x06;
@@ -24,11 +22,11 @@ class CPU {
     this.ram = ram;
 
     this.reg = new Array(8).fill(0);
-     // General-purpose registers R0-R7
-    this.reg[SP] = 0xf4 
+    // General-purpose registers R0-R7
+    this.reg[SP] = 0xf4;
     // Special-purpose registers
     this.PC = 0; // Program Counter
-// sets place in stack
+    // sets place in stack
   }
 
   /**
@@ -53,15 +51,14 @@ class CPU {
   stopClock() {
     clearInterval(this.clock);
   }
-pop(ele){
-  
- this.reg[ele] = this.ram.read(this.reg[SP])
-  this.reg[SP] ++;
-}
-push(ele){
-   this.reg[SP] --;
-  this.poke(this.reg[SP], this.reg[ele]) 
-}
+  pop(ele) {
+    this.reg[ele] = this.ram.read(this.reg[SP]);
+    this.reg[SP]++;
+  }
+  push(ele) {
+    this.reg[SP]--;
+    this.poke(this.reg[SP], this.reg[ele]);
+  }
 
   /**
    * ALU functionality
@@ -76,22 +73,12 @@ push(ele){
   alu(op, regA, regB) {
     switch (op) {
       case MUL:
-
         console.log(this.reg[regA] * this.reg[regB]);
-        this.PC +=3;
-        break;
-      case "ADD":
-        return this.reg[regA] + this.reg[regB];
-        break;
-      case "SUB":
-        return this.reg[regA] - this.reg[regB];
-        break;
-      case "DIV":
-        return this.reg[regA] / this.reg[regB];
+        this.PC += 3;
         break;
 
       default:
-        console.log(`unknown instruction${IR.toString(2)}`);
+        console.log(`unknown instruction${OP.toString(2)}`);
         this.stopClock();
         break;
     }
@@ -109,7 +96,7 @@ push(ele){
     // !!! IMPLEMENT ME
 
     // Debugging output
-    //console.log(`${this.PC}: ${IR.toString(2)}`);
+    console.log(`${this.PC}: ${IR.toString(2)}`);
 
     // Get the two bytes in memory _after_ the PC in case the instruction
     // needs them.
@@ -125,15 +112,21 @@ push(ele){
         this.PC += 3;
         break;
       case PRN:
-
         console.log(this.reg[operandA]);
         this.PC += 2;
         break;
       case HLT:
         this.stopClock();
-        this.PC +=1
+        this.PC += 1;
         break;
-
+      case PUSH:
+        this.push(this.reg[operandA])
+        this.PC += 2;
+        break;
+      case POP:
+        this.pop(this.reg[operandA]);
+        this.PC += 2;
+        break;
       default:
         this.alu(IR, operandA, operandB);
         break;
