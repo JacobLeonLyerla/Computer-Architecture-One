@@ -5,6 +5,10 @@ const LDI = 0b10011001;
 const PRN = 0b01000011;
 const HLT =0b00000001;
 const MUL = 0b10101010;
+
+let SP = 0x07;
+// let IS = 0x06;
+// let IM = 0x05;
 /**
  * Class for simulating a simple Computer (CPU & memory)
  */
@@ -15,10 +19,12 @@ class CPU {
   constructor(ram) {
     this.ram = ram;
 
-    this.reg = new Array(8).fill(0); // General-purpose registers R0-R7
-
+    this.reg = new Array(8).fill(0);
+     // General-purpose registers R0-R7
+    this.reg[SP] = 0xf4 
     // Special-purpose registers
     this.PC = 0; // Program Counter
+// sets place in stack
   }
 
   /**
@@ -43,6 +49,7 @@ class CPU {
   stopClock() {
     clearInterval(this.clock);
   }
+
 
   /**
    * ALU functionality
