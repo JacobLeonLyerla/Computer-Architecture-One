@@ -1,3 +1,4 @@
+
 /**
  * LS-8 v2.0 emulator skeleton code
  */
@@ -5,6 +6,9 @@ const LDI = 0b10011001;
 const PRN = 0b01000011;
 const HLT =0b00000001;
 const MUL = 0b10101010;
+const PUSH = 0b01001101;
+const POP = 0b01001100;
+
 
 let SP = 0x07;
 // let IS = 0x06;
@@ -49,7 +53,15 @@ class CPU {
   stopClock() {
     clearInterval(this.clock);
   }
-
+pop(ele){
+  
+ this.reg[ele] = this.ram.read(this.reg[SP])
+  this.reg[SP] ++;
+}
+push(ele){
+   this.reg[SP] --;
+  this.poke(this.reg[SP], this.reg[ele]) 
+}
 
   /**
    * ALU functionality
