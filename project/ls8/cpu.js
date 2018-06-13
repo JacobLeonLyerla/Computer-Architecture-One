@@ -51,14 +51,7 @@ class CPU {
   stopClock() {
     clearInterval(this.clock);
   }
-  pop(ele) {
-    this.reg[ele] = this.ram.read(this.reg[SP]);
-    this.reg[SP]++;
-  }
-  push(ele) {
-    this.reg[SP]--;
-    this.poke(this.reg[SP], this.reg[ele]);
-  }
+
 
   /**
    * ALU functionality
@@ -96,7 +89,7 @@ class CPU {
     // !!! IMPLEMENT ME
 
     // Debugging output
-    console.log(`${this.PC}: ${IR.toString(2)}`);
+    //console.log(`${this.PC}: ${IR.toString(2)}`);
 
     // Get the two bytes in memory _after_ the PC in case the instruction
     // needs them.
@@ -120,12 +113,14 @@ class CPU {
         this.PC += 1;
         break;
       case PUSH:
-        this.push(this.reg[operandA])
+      this.poke(this.reg[SP], this.reg[operandA]);
+      this.reg[SP]--;    
         this.PC += 2;
         break;
       case POP:
-        this.pop(this.reg[operandA]);
-        this.PC += 2;
+      this.reg[SP]++;
+      this.reg[operandA] = this.ram.read(this.reg[SP]);
+              this.PC += 2;
         break;
       default:
         this.alu(IR, operandA, operandB);
