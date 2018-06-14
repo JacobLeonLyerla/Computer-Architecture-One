@@ -9,6 +9,7 @@ const PUSH = 0b01001101;
 const POP = 0b01001100;
 const RET = 0b00001001;
 const CALL = 0b01001000;
+const ADD = 0b10101000;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -66,12 +67,17 @@ class CPU {
   alu(op, regA, regB) {
     switch (op) {
       case MUL:
-        console.log(this.reg[regA] * this.reg[regB]);
+        this.reg[regA] =this.reg[regA] * this.reg[regB];
         this.PC += 3;
         break;
+      case ADD:
+      this.reg[regA] = this.reg[regA] + this.reg[regB]
+      this.PC += 3;
+      
+      break;
 
       default:
-        console.log(`unknown instruction${OP.toString(2)}`);
+        console.log(`unknown instruction${op.toString(2)}`);
         this.stopClock();
         break;
     }
@@ -121,14 +127,14 @@ class CPU {
         this.popElement(operandA);
         this.PC += 2;
         break;
-
       case CALL:
         this.reg[SP]--;
         this.poke(this.reg[SP], this.PC + 2);
         this.PC = this.reg[operandA];
         break;
       case RET:
-        this.PC = This.ram.read(this.reg[SP]);
+  
+      this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
         break;
       default:
