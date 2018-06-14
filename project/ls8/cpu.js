@@ -7,7 +7,8 @@ const HLT = 0b00000001;
 const MUL = 0b10101010;
 const PUSH = 0b01001101;
 const POP = 0b01001100;
-
+const RET = 0b00001001;
+const CALL = 0b01001000;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -51,7 +52,6 @@ class CPU {
   stopClock() {
     clearInterval(this.clock);
   }
-
 
   /**
    * ALU functionality
@@ -113,27 +113,59 @@ class CPU {
         this.PC += 1;
         break;
       case PUSH:
-      this.poke(this.reg[SP], this.reg[operandA]);
-      this.reg[SP]--;    
+        this.pushElement(this.reg[operandA]);
         this.PC += 2;
         break;
       case POP:
-      this.reg[SP]++;
-      this.reg[operandA] = this.ram.read(this.reg[SP]);
-              this.PC += 2;
+        // this.reg[operandA] = this.ram.read(this.reg[SP]);
+        this.popElement(operandA);
+        this.PC += 2;
+        break;
+
+      case CALL:
+        this.reg[SP]--;
+        this.poke(this.reg[SP], this.PC + 2);
+        this.PC = this.reg[operandA];
+        break;
+      case RET:
+        this.PC = This.ram.read(this.reg[SP]);
+        this.reg[SP]++;
         break;
       default:
         this.alu(IR, operandA, operandB);
         break;
     }
-
-    // Increment the PC register to go to the next instruction. Instructions
-    // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
-    // instruction byte tells you how many bytes follow the instruction byte
-    // for any particular instruction.
-
-    // !!! IMPLEMENT ME
   }
+  // Increment the PC register to go to the next instruction. Instructions
+  // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
+  // instruction byte tells you how many bytes follow the instruction byte
+  // for any particular instruction.
+  pushElement(e) {
+    this.reg[SP]--;
+    this.poke(this.reg[SP], e);
+  }
+  popElement(e = null) {
+    console.loge;
+    if (e === null) {
+      const newVar = this.ram.read(this.reg[SP]);
+      this.reg[SP]++;
+
+      console.log("sp:", this.reg[SP]);
+      console.log("new variable :", newVar);
+      return newVar;
+    }
+    this.reg[e] = this.ram.read(this.reg[SP]);
+
+    console.log("this e");
+    this.reg[SP]++;
+    return e;
+  }
+  // callElement(e){
+  //   this.reg[SP]--
+  //   this.ram.write(this.reg[SP], this.reg.PC+2)
+  //   const element = this.reg[e]
+  //   return element;
+  // }
 }
 
 module.exports = CPU;
