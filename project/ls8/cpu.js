@@ -10,6 +10,10 @@ const POP = 0b01001100;
 const RET = 0b00001001;
 const CALL = 0b01001000;
 const ADD = 0b10101000;
+const CMP = 0b10100000;
+const JEQ  = 0b01010001;
+const JMP  = 0b01010000;
+const JNE = 0b01010010;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -67,14 +71,14 @@ class CPU {
   alu(op, regA, regB) {
     switch (op) {
       case MUL:
-        this.reg[regA] =this.reg[regA] * this.reg[regB];
+        this.reg[regA] = this.reg[regA] * this.reg[regB];
         this.PC += 3;
         break;
       case ADD:
-      this.reg[regA] = this.reg[regA] + this.reg[regB]
-      this.PC += 3;
-      
-      break;
+        this.reg[regA] = this.reg[regA] + this.reg[regB];
+        this.PC += 3;
+
+        break;
 
       default:
         console.log(`unknown instruction${op.toString(2)}`);
@@ -133,8 +137,7 @@ class CPU {
         this.PC = this.reg[operandA];
         break;
       case RET:
-  
-      this.PC = this.ram.read(this.reg[SP]);
+        this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
         break;
       default:
@@ -156,13 +159,10 @@ class CPU {
       const newVar = this.ram.read(this.reg[SP]);
       this.reg[SP]++;
 
-      console.log("sp:", this.reg[SP]);
-      console.log("new variable :", newVar);
       return newVar;
     }
     this.reg[e] = this.ram.read(this.reg[SP]);
 
-    console.log("this e");
     this.reg[SP]++;
     return e;
   }
