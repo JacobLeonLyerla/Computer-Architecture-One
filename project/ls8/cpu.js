@@ -14,6 +14,7 @@ const CMP = 0b10100000;
 const JEQ  = 0b01010001;
 const JMP  = 0b01010000;
 const JNE = 0b01010010;
+const FL = 0;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -139,6 +140,9 @@ class CPU {
       case RET:
         this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
+        break;
+        case JMP:
+        this.PC = this.reg[operandA]
         break;
       default:
         this.alu(IR, operandA, operandB);
