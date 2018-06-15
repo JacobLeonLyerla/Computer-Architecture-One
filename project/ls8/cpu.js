@@ -14,9 +14,6 @@ const CMP = 0b10100000;
 const JEQ = 0b01010001;
 const JMP = 0b01010000;
 const JNE = 0b01010010;
-const FLAGE = 0;
-const FLAGG = 1;
-const FLAGL = 2;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -30,12 +27,17 @@ class CPU {
   constructor(ram) {
     this.ram = ram;
 
+    
     this.reg = new Array(8).fill(0);
     // General-purpose registers R0-R7
     this.reg[SP] = 0xf4;
     // Special-purpose registers
     this.PC = 0; // Program Counter
     // sets place in stack
+    //*********************** MY FLAGS */
+    this.FLAGE = 0; // equal
+    this.FLAGG = 1; // greater
+    this.FLAGL = 2; //less
   }
 
   /**
@@ -135,42 +137,44 @@ class CPU {
         this.PC += 2;
         break;
       case CALL:
+      console.log("worked")
         this.reg[SP]--;
         this.poke(this.reg[SP], this.PC + 2);
         this.PC = this.reg[operandA];
         break;
       case RET:
+      console.log("worked")
         this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
         break;
       case CMP:
         if (this.reg[operandA] === this.reg[operandB]) {
+          console.log("worked")
           this.FLAGE = 1;
         } else {
           this.FLAGE = 0;
         }
-        if (this.reg[operandA] < this.reg[operandB]) {
-          this.FLAGL = 1;
-        } else {
-          this.FLAGL = 0;
-        }
-        if (this.reg[operandA] > this.reg[operandB]) {
-          this.FLAGG = 1;
-        } else {
-          this.FLAGG = 0;
-        }
         break;
-      case JMP:
+      case JMP: 
+      console.log("worked")
         this.PC = this.reg[operandA];
         break;
       case JEQ:
         if (this.FLAGE === 1) {
+          console.log("worked")
           this.PC = this.reg[operandA];
         } else {
-          this.PC += 1;
+          this.PC += 2;
         }
         break;
-    ;
+      case JNE:
+        if (this.FLAGE = 0) {
+          console.log("worked")
+          this.PC = this.reg[operandA];
+        } else {
+          this.PC += 2;
+        }
+        break;
       default:
         this.alu(IR, operandA, operandB);
         break;
