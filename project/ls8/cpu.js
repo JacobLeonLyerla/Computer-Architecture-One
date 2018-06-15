@@ -11,10 +11,12 @@ const RET = 0b00001001;
 const CALL = 0b01001000;
 const ADD = 0b10101000;
 const CMP = 0b10100000;
-const JEQ  = 0b01010001;
-const JMP  = 0b01010000;
+const JEQ = 0b01010001;
+const JMP = 0b01010000;
 const JNE = 0b01010010;
-const FL = 0;
+const FLAGE = 0;
+const FLAGG = 1;
+const FLAGL = 2;
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -141,9 +143,34 @@ class CPU {
         this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
         break;
-        case JMP:
-        this.PC = this.reg[operandA]
+      case CMP:
+        if (this.reg[operandA] === this.reg[operandB]) {
+          this.FLAGE = 1;
+        } else {
+          this.FLAGE = 0;
+        }
+        if (this.reg[operandA] < this.reg[operandB]) {
+          this.FLAGL = 1;
+        } else {
+          this.FLAGL = 0;
+        }
+        if (this.reg[operandA] > this.reg[operandB]) {
+          this.FLAGG = 1;
+        } else {
+          this.FLAGG = 0;
+        }
         break;
+      case JMP:
+        this.PC = this.reg[operandA];
+        break;
+      case JEQ:
+        if (this.FLAGE === 1) {
+          this.PC = this.reg[operandA];
+        } else {
+          this.PC += 1;
+        }
+        break;
+    ;
       default:
         this.alu(IR, operandA, operandB);
         break;
