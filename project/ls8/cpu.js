@@ -14,6 +14,7 @@ const CMP = 0b10100000;
 const JEQ = 0b01010001;
 const JMP = 0b01010000;
 const JNE = 0b01010010;
+
 let SP = 0x07;
 // let IS = 0x06;
 // let IM = 0x05;
@@ -120,7 +121,7 @@ class CPU {
         this.PC += 3;
         break;
       case PRN:
-        console.log(this.reg[operandA]);
+        console.log("Printed:",this.reg[operandA]);
         this.PC += 2;
         break;
       case HLT:
@@ -137,39 +138,46 @@ class CPU {
         this.PC += 2;
         break;
       case CALL:
-      console.log("worked")
         this.reg[SP]--;
         this.poke(this.reg[SP], this.PC + 2);
         this.PC = this.reg[operandA];
         break;
       case RET:
-      console.log("worked")
         this.PC = this.ram.read(this.reg[SP]);
         this.reg[SP]++;
         break;
       case CMP:
+ 
         if (this.reg[operandA] === this.reg[operandB]) {
-          console.log("worked")
+       // console.log(this.FLAGE)
           this.FLAGE = 1;
+          this.PC+=3
         } else {
+         // console.log(this.FLAGE)
           this.FLAGE = 0;
+          this.PC+=3
         }
         break;
       case JMP: 
-      console.log("worked")
+      //console.log("worked jmp")
+
         this.PC = this.reg[operandA];
         break;
       case JEQ:
+     // console.log("i worked jeq")
         if (this.FLAGE === 1) {
-          console.log("worked")
+        //  console.log("worked jeq",this.FLAGE)
           this.PC = this.reg[operandA];
         } else {
           this.PC += 2;
         }
         break;
       case JNE:
-        if (this.FLAGE = 0) {
-          console.log("worked")
+     // console.log("i worked jne")
+    
+        if (this.FLAGE === 0) {
+        
+        //  console.log("worked jne",this.FLAGE)
           this.PC = this.reg[operandA];
         } else {
           this.PC += 2;
