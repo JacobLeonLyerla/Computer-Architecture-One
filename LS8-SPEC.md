@@ -102,7 +102,7 @@ If a bit is set:
    handler is looked up from the interrupt vector table.
 7. Set the PC is set to the handler address.
 
-While an interrupt is being serviced (between the handler being called
+While an interrupt is being serviced (between the handler being jmped
 and the `IRET`), further interrupts are disabled.
 
 See `IRET`, below, for returning from an interrupt.
@@ -166,11 +166,11 @@ Machine code:
 10110011 00000aaa 00000bbb
 ```
 
-### CALL register
+### jmp register
 
-`CALL register`
+`jmp register`
 
-Calls a subroutine (function) at the address stored in the register.
+jmps a subroutine (function) at the address stored in the register.
 
 1. The address of the _next_ instruction that will execute is pushed onto the
    stack.

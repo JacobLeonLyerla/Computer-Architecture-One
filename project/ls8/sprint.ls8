@@ -37,7 +37,7 @@
 10011001 # LDI R3,2
 00000011
 00000010
-01000011 # PRN R3        Skipped--does not print
+01000011 # PRN R3        Skipped--does not print//
 00000011
 
 # TEST2 (32):
